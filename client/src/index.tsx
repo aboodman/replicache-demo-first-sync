@@ -40,6 +40,8 @@ async function init() {
     mutators,
   });
 
+  void r.mutate.init();
+
   // Implements a Replicache poke using Server-Sent Events.
   // If a "poke" message is received, it will pull from the server.
   const ev = new EventSource(`/api/replicache/poke?spaceID=${listID}`, {

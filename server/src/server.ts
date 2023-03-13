@@ -5,12 +5,20 @@ import {mutators} from 'shared';
 import {fileURLToPath} from 'url';
 import express from 'express';
 import fs from 'fs';
+import type {WriteTransaction} from 'replicache';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const portEnv = parseInt(process.env.PORT || '');
 const port = Number.isInteger(portEnv) ? portEnv : 8080;
 const options = {
-  mutators,
+  mutators: {
+    ...mutators,
+    init: async (tx: WriteTransaction) => {
+      // Use '!' as a simple namespace to separate from todos.
+      // nanoid() use the alphabet a-zA-Z0-9_-.
+      await tx.put('$firstSync', true);
+    },
+  },
   port,
   host: process.env.HOST || '0.0.0.0',
 };

@@ -14,5 +14,15 @@ export type Todo = {
 export type TodoUpdate = Partial<Todo> & Pick<Todo, 'id'>;
 
 export async function listTodos(tx: ReadTransaction) {
-  return (await tx.scan().values().toArray()) as Todo[];
+  return (await tx
+    .scan({
+      start: {
+        // Our todos are have IDs with the alphabet [a-zA-Z0-9-_],
+        // so start scanning at -.
+        key: '-',
+        exclusive: false,
+      },
+    })
+    .values()
+    .toArray()) as Todo[];
 }

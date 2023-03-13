@@ -60,4 +60,9 @@ export const mutators = {
     const maxSort = todos.pop()?.sort ?? 0;
     await tx.put(todo.id, {...todo, sort: maxSort + 1});
   },
+
+  init: async () => {
+    // this is a no-op on the client.
+    // See server.ts for server impl.
+  },
 };

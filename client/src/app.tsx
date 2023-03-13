@@ -9,6 +9,9 @@ import MainSection from './components/main-section';
 
 // This is the top-level component for our app.
 const App = ({rep}: {rep: Replicache<M>}) => {
+  const firstSync = useSubscribe(rep, tx => tx.get('$firstSync'), undefined);
+  console.log({firstSync});
+
   // Subscribe to all todos and sort them.
   const todos = useSubscribe(rep, listTodos, [], [rep]);
   todos.sort((a, b) => a.sort - b.sort);
